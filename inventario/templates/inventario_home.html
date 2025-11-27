@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario</title>
+    <style>
+        .table-container { width: 100%; border: 1px solid #ccc; }
+        .header-row { display: flex; background-color: #f0f0f0; font-weight: bold; padding: 10px; }
+        .header-row div { flex: 1; text-align: center; }
+        .product-row { display: flex; border-top: 1px solid #ccc; padding: 10px; }
+        .product-row div { flex: 1; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>{{ titulo }}</h1>
+    <p>Productos de la tienda Mundo Cartas.</p>
+    
+    <div class="table-container">
+        <!-- Encabezados -->
+        <div class="header-row">
+            <div>Nombre</div>
+            <div>Descripción</div>
+            <div>Categoría</div>
+            <div>Precio</div>
+            <div>Stock</div>
+            <div>Acciones</div>
+        </div>
+        
+        <!-- Productos -->
+        {% for producto in productos %}
+            <div class="product-row">
+                <div>{{ producto.nombre }}</div>
+                <div>{{ producto.descripcion }}</div>
+                <div>{{ producto.categoria.nombre }}</div>
+                <div>${{ producto.precio }}</div>
+                <div>{{ producto.stock }}</div>
+                <div>
+                    <button>Sin Stock</button>
+                    <button>Editar</button>
+                    <button>Borrar</button>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
