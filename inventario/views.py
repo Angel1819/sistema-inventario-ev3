@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Producto, Categoria
 
 # Create your views here.
-def home(request):
+def inventario_home(request):
     titulo = "Inventario de Productos"
     productos = Producto.objects.all()
     categorias = Categoria.objects.all()

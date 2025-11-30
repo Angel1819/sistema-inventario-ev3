@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Catálogo de Playas de Arica</title>
+    <title>Inventario Mundo Cartas</title>
 
     <!-- Bootstrap CSS -->
     <link
@@ -20,8 +20,8 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4 shadow-sm">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <i class="bi bi-sun"></i> Playas de Arica
+        <a class="navbar-brand" href="{% url "home" %}">
+          <i class="bi bi-dice-6"></i> Mundo Cartas
         </a>
 
         <button
@@ -35,23 +35,23 @@
 
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav ms-auto">
-            <!-- Enlace: listado de playas -->
+            <!-- Enlace: Inventario Productos -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
-                <i class="bi bi-water"></i> Listado de Playas
+              <a class="nav-link" href="{% url "inventario_home" %}">
+                <i class="bi bi-box"></i> Inventario Productos
               </a>
             </li>
 
             <!-- Enlace: cerrar sesión -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url "cerrar_sesion" %}">
                 <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
               </a>
             </li>
 
             <!-- Enlace: iniciar sesión -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="iniciar_sesion">
                 <i class="bi bi-person-circle"></i> Iniciar Sesión
               </a>
             </li>
@@ -64,10 +64,9 @@
     <div class="container">
       <!-- Aquí el alumno agregará los bloques -->
       <div class="text-center mt-5">
-        <h1>Catálogo de Playas de Arica</h1>
+        <h1>Sistema de Inventario de Mundo Cartas</h1>
         <p class="lead">
-          Explora las playas de Arica, su aptitud para baño, servicios
-          disponibles y factores de riesgo.
+          Tienda de Cartas TCG, Figuras de colección y Videojuegos.
         </p>
       </div>
     </div>
