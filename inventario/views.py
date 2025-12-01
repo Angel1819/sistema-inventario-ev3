@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Producto, Categoria
+from .forms import ProductoForm
 
 # Create your views here.
 def inventario_home(request):
@@ -13,4 +14,14 @@ def inventario_home(request):
         })
     
 def crear_producto(request):
-    return render(request, 'inventario/crear_producto.html')
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('inventario_home')
+    else:
+        form = ProductoForm()
+    
+    return render(request, 'inventario/crear_producto.html', {
+        'form': form
+    })

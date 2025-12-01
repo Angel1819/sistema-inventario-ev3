@@ -1,20 +1,33 @@
 {% extends "sistemainventario/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
-<div class="text-center mt-5">
-        <h1>Crear nuevo producto</h1>
-        <p class="lead">
-            Aquí puedes agregar un nuevo producto al inventario.
-        </p>
-      </div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title">Crear nuevo producto</h1>
+                    <p class="card-text">Aquí puedes agregar un nuevo producto al inventario.</p>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="d-flex justify-content-between mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Guardar Producto
+                            </button>
+                            <a href="{% url 'inventario_home' %}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Botón para registrar una nueva playa -->
-    <div class="mb-3 text-end">
-        <a href="{% url "crear_producto" %}" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Nuevo Producto
-        </a>
-    </div>
+</div>
 
 {% endblock content %}
