@@ -1,0 +1,20 @@
+{% extends "sistemainventario/base.html" %}
+
+{% block content %}
+
+<div class="text-center mt-5">
+        <h1>Crear nuevo producto</h1>
+        <p class="lead">
+            Aquí puedes agregar un nuevo producto al inventario.
+        </p>
+      </div>
+    </div>
+
+    <!-- Botón para registrar una nueva playa -->
+    <div class="mb-3 text-end">
+        <a href="{% url "crear_producto" %}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Nuevo Producto
+        </a>
+    </div>
+
+{% endblock content %}

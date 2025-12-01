@@ -13,10 +13,20 @@
     </style>
 </head>
 <body>
-{% extends "base.html" %}
-
-    <h1>{{ titulo }}</h1>
-    <p>Productos de la tienda Mundo Cartas.</p>
+{% extends "sistemainventario/base.html" %}
+    {% block content %}
+    
+    {% comment %} <h1>{{ titulo }}</h1>
+    <p>Productos de la tienda Mundo Cartas.</p> {% endcomment %}
+    <div class="container">
+      <!-- Aquí el alumno agregará los bloques -->
+      <div class="text-center mt-5">
+        <h1>{{ titulo }}</h1>
+        <p class="lead">
+          Stock de productos de la tienda Mundo Cartas.
+        </p>
+      </div>
+    </div>
     
     <div class="table-container">
         <!-- Encabezados -->
@@ -45,5 +55,7 @@
             </div>
         {% endfor %}
     </div>
+
+    {% endblock content %}
 </body>
 </html>
