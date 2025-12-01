@@ -1,33 +1,25 @@
 {% extends "sistemainventario/base.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags %}  <!-- 1 Dic 2025 14:00: Carga las etiquetas de crispy forms para renderizar formularios con Bootstrap -->
 
 {% block content %}
-
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h1 class="card-title">Crear nuevo producto</h1>
-                    <p class="card-text">Aquí puedes agregar un nuevo producto al inventario.</p>
-                </div>
-                <div class="card-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <div class="d-flex justify-content-between mt-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-check-circle"></i> Guardar Producto
-                            </button>
-                            <a href="{% url 'inventario_home' %}" class="btn btn-secondary">
-                                <i class="bi bi-arrow-left"></i> Cancelar
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
+    <div class="card">
+        <div class="card-header">
+            <h1>Crear nuevo producto</h1>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}  <!-- 1 Dic 2025 14:00: Token CSRF obligatorio para seguridad en formularios POST -->
+                {{ form|crispy }}  <!-- 1 Dic 2025 14:00: Renderiza el formulario completo con estilos Bootstrap usando crispy forms -->
+                
+                <button type="submit" class="btn btn-primary">
+                    Guardar Producto
+                </button>
+                <a href="{% url 'inventario_home' %}" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </form>
         </div>
     </div>
 </div>
-
 {% endblock content %}

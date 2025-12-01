@@ -13,15 +13,19 @@ def inventario_home(request):
         'categorias': categorias
         })
     
-def crear_producto(request):
-    if request.method == 'POST':
-        form = ProductoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('inventario_home')
-    else:
-        form = ProductoForm()
+# def crear_producto(request):
+#     if request.method == 'POST':
+#         form = ProductoForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('inventario_home')
+#     else:
+#         form = ProductoForm()
     
+#     return render(request, 'inventario/crear_producto.html', {
+#         'form': form
+#     })
+def crear_producto(request):
     return render(request, 'inventario/crear_producto.html', {
-        'form': form
+        'form': ProductoForm()
     })

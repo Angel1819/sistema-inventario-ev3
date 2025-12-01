@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'usuarios',
     'inventario',
     'sistemainventario',
@@ -123,3 +125,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuración para django-crispy-forms - 1 Dic 2025 14:00
+# Esta línea configura crispy forms para usar Bootstrap 5 como template pack.
+# Permite que los formularios se rendericen con estilos de Bootstrap automáticamente.
+# Sin esto, el filtro {{ form|crispy }} en templates no funciona.
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
