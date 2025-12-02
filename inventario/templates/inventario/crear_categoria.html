@@ -1,0 +1,28 @@
+{% extends "sistemainventario/base.html" %}
+
+{% load crispy_forms_tags %}  <!-- Carga las etiquetas de crispy forms para renderizar formularios con Bootstrap -->
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1>Crear nueva categoría</h1>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}  <!-- Token CSRF obligatorio para seguridad en formularios POST -->
+                {{ form|crispy }}  <!-- Renderiza el formulario completo con estilos Bootstrap usando crispy forms -->
+                
+                <button type="submit" class="btn btn-primary">
+                    Guardar Categoría
+                </button>
+                <a href="{% url 'crear_producto' %}" class="btn btn-secondary">
+                    Cancelar
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
