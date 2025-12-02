@@ -1,25 +1,23 @@
 {% extends "sistemainventario/base.html" %}
-
-{% load crispy_forms_tags %}  <!-- Carga las etiquetas de crispy forms para renderizar formularios con Bootstrap -->
+{% load crispy_forms_tags %}  <!-- 2 Dic 2025: Carga las etiquetas de crispy forms para renderizar formularios con Bootstrap -->
 
 {% block title %}
-<title>Crear Categoría - Mundo Cartas</title>
+<title>Editar Producto - Mundo Cartas</title>
 {% endblock title %}
 
 {% block content %}
-
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <h1>Crear nueva categoría</h1>
+            <h1>Editar producto: {{ producto.nombre }}</h1>
         </div>
         <div class="card-body">
             <form method="post">
-                {% csrf_token %}  <!-- Token CSRF obligatorio para seguridad en formularios POST -->
-                {{ form|crispy }}  <!-- Renderiza el formulario completo con estilos Bootstrap usando crispy forms -->
+                {% csrf_token %}  <!-- 2 Dic 2025: Token CSRF obligatorio para seguridad en formularios POST -->
+                {{ form|crispy }}  <!-- 2 Dic 2025: Renderiza el formulario completo con estilos Bootstrap usando crispy forms -->
                 
                 <button type="submit" class="btn btn-primary">
-                    Guardar Categoría
+                    Guardar Cambios
                 </button>
                 <a href="{% url 'inventario_home' %}" class="btn btn-secondary">
                     Cancelar
@@ -28,5 +26,4 @@
         </div>
     </div>
 </div>
-
-{% endblock %}
+{% endblock content %}

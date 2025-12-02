@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from .models import Producto, Categoria
 from .forms import CategoriaForm, ProductoForm
 
@@ -24,6 +25,41 @@ def crear_producto(request):
     
     return render(request, 'inventario/crear_producto.html', {
         'form': form
+    })
+    
+def editar_producto(request, id):
+    # Obtener el producto por su ID o mostrar error 404 si no existe
+    producto = get_object_or_404(Producto, id=id)
+    
+    if request.method == 'POST':
+        # Rellenar el formulario con los datos enviados Y la instancia del producto
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()  # Actualiza el producto existente
+            messages.success(request, 'Producto actualizado exitosamente')
+            return redirect('inventario_home')
+    else:
+        # Prellenar el formulario con los datos actuales del producto
+        form = ProductoForm(instance=producto)
+    
+    return render(request, 'inventario/editar_producto.html', {
+        'form': form,
+        'producto': producto
+    })
+    
+def eliminar_producto(request, id):
+    # Obtener el producto o mostrar error 404
+    producto = get_object_or_404(Producto, id=id)
+    
+    if request.method == 'POST':
+        # Solo eliminar si se confirma con POST (seguridad)
+        producto.delete()
+        messages.success(request, f'Producto "{producto.nombre}" eliminado exitosamente')
+        return redirect('inventario_home')
+    
+    # Mostrar página de confirmación
+    return render(request, 'inventario/eliminar_producto.html', {
+        'producto': producto
     })
     
 def crear_categoria(request):
