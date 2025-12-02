@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Producto, Categoria
-from .forms import CategoriaForm, ProductoForm
+from .forms import CategoriaForm, ProductoForm, ProveedorForm
 
 # Create your views here.
 def inventario_home(request):
@@ -72,5 +72,18 @@ def crear_categoria(request):
         form = CategoriaForm()
         
     return render(request, 'inventario/crear_categoria.html', {
+        'form': form
+    })
+    
+def crear_proveedor(request):
+    if request.method == 'POST':
+        form = ProveedorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('inventario_home')
+    else:
+        form = ProveedorForm()
+    
+    return render(request, 'inventario/crear_proveedor.html', {
         'form': form
     })

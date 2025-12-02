@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}  <!-- Carga las etiquetas de crispy forms para renderizar formularios con Bootstrap -->
 
 {% block title %}
-<title>Crear Categoría - Mundo Cartas</title>
+<title>Crear Proveedor - Mundo Cartas</title>
 {% endblock title %}
 
 {% block content %}
@@ -11,15 +11,15 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <h1>Crear nueva categoría</h1>
+            <h1>Crear nuevo proveedor</h1>
         </div>
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}  <!-- Token CSRF obligatorio para seguridad en formularios POST -->
                 {{ form|crispy }}  <!-- Renderiza el formulario completo con estilos Bootstrap usando crispy forms -->
                 
-                <button type="submit" class="btn btn-info">
-                    Guardar Categoría
+                <button type="submit" class="btn btn-warning">
+                    Guardar Proveedor
                 </button>
                 <a href="{% url 'inventario_home' %}" class="btn btn-secondary">
                     Cancelar

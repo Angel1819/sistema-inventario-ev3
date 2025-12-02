@@ -39,8 +39,11 @@
         <a href="{% url 'crear_producto' %}" class="btn btn-success">
           <i class="bi bi-plus-circle"></i> Nuevo Producto
         </a>
-        <a href="{% url 'crear_categoria' %}" class="btn btn-primary">
+        <a href="{% url 'crear_categoria' %}" class="btn btn-info">
           <i class="bi bi-plus-circle"></i> Nueva Categoría
+        </a>
+        <a href="{% url 'crear_proveedor' %}" class="btn btn-warning">
+          <i class="bi bi-plus-circle"></i> Nuevo Proveedor
         </a>
       </div>
     
@@ -88,7 +91,8 @@
                  data-stock_minimo="{{ producto.stock_minimo }}"
                  data-fecha_creacion="{{ producto.fecha_creacion|date:'Y-m-d H:i' }}"
                  data-fecha_modificacion="{{ producto.fecha_modificacion|date:'Y-m-d H:i' }}"
-                 data-categoria="{{ producto.categoria.nombre }}">
+                 data-categoria="{{ producto.categoria.nombre }}"
+                 data-proveedores="{% for proveedor in producto.proveedores.all %}{{ proveedor.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}">
                 Ver detalles
               </a>
               <a href="{% url 'editar_producto' producto.id %}" class="btn btn-warning btn-sm">Modificar</a>
@@ -123,6 +127,7 @@
               <li class="list-group-item"><strong>Fecha creación:</strong> <span id="detalle-fecha_creacion"></span></li>
               <li class="list-group-item"><strong>Fecha modificación:</strong> <span id="detalle-fecha_modificacion"></span></li>
               <li class="list-group-item"><strong>Categoría:</strong> <span id="detalle-categoria"></span></li>
+              <li class="list-group-item"><strong>Proveedores:</strong> <span id="detalle-proveedores"></span></li>
             </ul>
           </div>
         </div>
@@ -151,6 +156,7 @@
         document.getElementById('detalle-fecha_creacion').textContent = button.getAttribute('data-fecha_creacion');
         document.getElementById('detalle-fecha_modificacion').textContent = button.getAttribute('data-fecha_modificacion');
         document.getElementById('detalle-categoria').textContent = button.getAttribute('data-categoria');
+        document.getElementById('detalle-proveedores').textContent = button.getAttribute('data-proveedores') || 'Sin proveedores';
       });
     });
     </script>
