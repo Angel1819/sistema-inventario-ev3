@@ -31,7 +31,7 @@ def crear_categoria(request):
         form = CategoriaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('crear_producto')
+            return redirect('inventario_home')
     else:
         form = CategoriaForm()
         
