@@ -1,0 +1,14 @@
+# Ignorar archivos de base de datos de Django
+db.sqlite3
+*.pyc
+__pycache__/
+venv/
+.env
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+.DS_Store
+.idea/
+.vscode/
+*.log
