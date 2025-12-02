@@ -1,9 +1,13 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %}
     <title>Inventario Mundo Cartas</title>
+    {% endblock title %}
+    <link rel="icon" type="image/png" href="{% static 'logoMundoCartas.png' %}">
 
     <!-- Bootstrap CSS -->
     <link
@@ -60,19 +64,22 @@
       </div>
     </nav>
 
+
     <!-- Contenido dinámico -->
     {% block content %}
-    
     <div class="container">
       <!-- Aquí el alumno agregará los bloques -->
-      <div class="text-center mt-5">
+      <div class="text-center mt-4">
         <h1>Sistema de Inventario de Mundo Cartas</h1>
         <p class="lead">
           Tienda de Cartas TCG, Figuras de colección y Videojuegos.
         </p>
       </div>
     </div>
-
+    <!-- Banner Mundo Cartas - 2 Dic 2025 -->
+    <div class="w-100 mt-3 mb-4 d-flex justify-content-center" style="overflow-x:hidden;">
+      <img src="{% static 'bannerMundoCartas.png' %}" alt="Banner Mundo Cartas" class="img-fluid rounded-3 shadow" style="width:100%; max-width:1200px; height:auto;">
+    </div>
     {% endblock %}
 
     <!-- Bootstrap JS -->

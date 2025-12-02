@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="es">
+{% extends "sistemainventario/base.html" %}
+{% load static %}
+{% comment %} <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}
     <title>Inventario</title>
+    {% endblock title %}
+    <link rel="icon" type="image/png" href="{% static 'logoMundoCartas.png' %}">
     <style>
         .table-container { width: 100%; border: 1px solid #ccc; }
         .header-row { display: flex; background-color: #f0f0f0; font-weight: bold; padding: 10px; }
@@ -11,9 +16,11 @@
         .product-row { display: flex; border-top: 1px solid #ccc; padding: 10px; }
         .product-row div { flex: 1; text-align: center; }
     </style>
-</head>
+</head> {% endcomment %}
+{% block title %}
+<title>Inventario</title>
+{% endblock title %}
 <body>
-{% extends "sistemainventario/base.html" %}
     {% block content %}
     
     {% comment %} <h1>{{ titulo }}</h1>
@@ -32,35 +39,121 @@
         <a href="{% url 'crear_producto' %}" class="btn btn-success">
           <i class="bi bi-plus-circle"></i> Nuevo Producto
         </a>
+        <a href="{% url 'crear_categoria' %}" class="btn btn-primary">
+          <i class="bi bi-plus-circle"></i> Nueva Categoría
+        </a>
       </div>
     
-    <div class="table-container">
-        <!-- Encabezados -->
-        <div class="header-row">
-            <div>Nombre</div>
-            <div>Descripción</div>
-            <div>Categoría</div>
-            <div>Precio</div>
-            <div>Stock</div>
-            <div>Acciones</div>
-        </div>
-        
-        <!-- Productos -->
-        {% for producto in productos %}
-            <div class="product-row">
-                <div>{{ producto.nombre }}</div>
-                <div>{{ producto.descripcion }}</div>
-                <div>{{ producto.categoria.nombre }}</div>
-                <div>${{ producto.precio }}</div>
-                <div>{{ producto.stock }}</div>
-                <div>
-                    <button>Sin Stock</button>
-                    <button>Editar</button>
-                    <button>Borrar</button>
-                </div>
-            </div>
-        {% endfor %}
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for producto in productos %}
+          <tr>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.categoria.nombre }}</td>
+            <td>${{ producto.precio }}</td>
+            <td>{{ producto.stock }}</td>
+            <td>
+              {% if producto.stock == 0 %}
+                <span class="badge bg-danger">Sin stock</span>
+              {% elif producto.stock <= producto.stock_minimo %}
+                <span class="badge bg-warning text-dark">Stock bajo</span>
+              {% else %}
+                <span class="badge bg-success">Con stock</span>
+              {% endif %}
+            </td>
+            <td>
+              <!--
+                Botón "Ver detalles":
+                - data-bs-toggle="modal" y data-bs-target="#detalleModal" hacen que Bootstrap abra el modal con id "detalleModal" al hacer clic.
+                - Los atributos data-* (data-id, data-nombre, etc.) almacenan los datos del producto.
+                - Estos datos serán leídos por el script JS para llenar el modal dinámicamente.
+              -->
+              <a href="#" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#detalleModal"
+                 data-id="{{ producto.id }}"
+                 data-nombre="{{ producto.nombre }}"
+                 data-descripcion="{{ producto.descripcion }}"
+                 data-precio="{{ producto.precio }}"
+                 data-stock="{{ producto.stock }}"
+                 data-stock_minimo="{{ producto.stock_minimo }}"
+                 data-fecha_creacion="{{ producto.fecha_creacion|date:'Y-m-d H:i' }}"
+                 data-fecha_modificacion="{{ producto.fecha_modificacion|date:'Y-m-d H:i' }}"
+                 data-categoria="{{ producto.categoria.nombre }}">
+                Ver detalles
+              </a>
+              <a href="#" class="btn btn-warning btn-sm">Modificar</a>
+              <a href="#" class="btn btn-danger btn-sm">Eliminar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
+
+    <!--
+      Modal Bootstrap para mostrar detalles del producto seleccionado.
+      - El modal tiene el id "detalleModal" y se abre automáticamente por Bootstrap cuando un botón con data-bs-toggle="modal" y data-bs-target="#detalleModal" es clickeado.
+      - Cada <span id="detalle-..."></span> será llenado dinámicamente por el script JS con los datos del producto.
+    -->
+    <div class="modal fade" id="detalleModal" tabindex="-1" aria-labelledby="detalleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="detalleModalLabel">Detalles del Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <ul class="list-group">
+              <li class="list-group-item"><strong>ID:</strong> <span id="detalle-id"></span></li>
+              <li class="list-group-item"><strong>Nombre:</strong> <span id="detalle-nombre"></span></li>
+              <li class="list-group-item"><strong>Descripción:</strong> <span id="detalle-descripcion"></span></li>
+              <li class="list-group-item"><strong>Precio:</strong> $<span id="detalle-precio"></span></li>
+              <li class="list-group-item"><strong>Stock:</strong> <span id="detalle-stock"></span></li>
+              <li class="list-group-item"><strong>Stock mínimo:</strong> <span id="detalle-stock_minimo"></span></li>
+              <li class="list-group-item"><strong>Fecha creación:</strong> <span id="detalle-fecha_creacion"></span></li>
+              <li class="list-group-item"><strong>Fecha modificación:</strong> <span id="detalle-fecha_modificacion"></span></li>
+              <li class="list-group-item"><strong>Categoría:</strong> <span id="detalle-categoria"></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      Script JS para llenar el modal con los datos del producto seleccionado.
+      - Cuando el modal se va a mostrar (evento show.bs.modal),
+        el script toma el botón que disparó el modal (event.relatedTarget).
+      - Lee cada atributo data-* del botón y lo coloca en el <span> correspondiente del modal.
+      - Así, el modal siempre muestra los datos correctos del producto seleccionado, sin recargar la página ni modificar la tabla.
+    -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var detalleModal = document.getElementById('detalleModal');
+      detalleModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        // Llenar cada campo del modal con el atributo correspondiente del botón
+        document.getElementById('detalle-id').textContent = button.getAttribute('data-id');
+        document.getElementById('detalle-nombre').textContent = button.getAttribute('data-nombre');
+        document.getElementById('detalle-descripcion').textContent = button.getAttribute('data-descripcion');
+        document.getElementById('detalle-precio').textContent = button.getAttribute('data-precio');
+        document.getElementById('detalle-stock').textContent = button.getAttribute('data-stock');
+        document.getElementById('detalle-stock_minimo').textContent = button.getAttribute('data-stock_minimo');
+        document.getElementById('detalle-fecha_creacion').textContent = button.getAttribute('data-fecha_creacion');
+        document.getElementById('detalle-fecha_modificacion').textContent = button.getAttribute('data-fecha_modificacion');
+        document.getElementById('detalle-categoria').textContent = button.getAttribute('data-categoria');
+      });
+    });
+    </script>
 
     {% endblock content %}
 </body>

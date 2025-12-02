@@ -12,12 +12,9 @@
                 {% csrf_token %}  <!-- 1 Dic 2025 14:00: Token CSRF obligatorio para seguridad en formularios POST -->
                 {{ form|crispy }}  <!-- 1 Dic 2025 14:00: Renderiza el formulario completo con estilos Bootstrap usando crispy forms -->
                 
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-success">
                     Guardar Producto
                 </button>
-                <a href="{% url 'crear_categoria' %}" class="btn btn-warning">
-                    Crear categoría
-                </a>
                 <a href="{% url 'inventario_home' %}" class="btn btn-secondary">
                     Cancelar
                 </a>
