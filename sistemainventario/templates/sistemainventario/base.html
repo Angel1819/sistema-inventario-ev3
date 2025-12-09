@@ -46,19 +46,36 @@
               </a>
             </li>
 
-            <!-- Enlace: cerrar sesión -->
+            <!-- Enlace: Carrito (solo si está logueado) -->
+            {% if request.user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url "cerrar_sesion" %}">
-                <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+              <a class="nav-link" href="{% url "ver_carrito" %}">
+                <i class="bi bi-cart3"></i> Mi Carrito
               </a>
             </li>
+            {% endif %}
 
-            <!-- Enlace: iniciar sesión -->
-            <li class="nav-item">
-              <a class="nav-link" href="iniciar_sesion">
-                <i class="bi bi-person-circle"></i> Iniciar Sesión
-              </a>
-            </li>
+            <!-- Mostrar usuario logueado o botón de login -->
+            {% if request.user.is_authenticated %}
+              <!-- Si está logueado: mostrar nombre y logout -->
+              <li class="nav-item">
+                <span class="nav-link">
+                  <i class="bi bi-person-circle"></i> {{ request.user.username }}
+                </span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "cerrar_sesion" %}">
+                  <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
+                </a>
+              </li>
+            {% else %}
+              <!-- Si NO está logueado: mostrar botón de login -->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url "iniciar_sesion" %}">
+                  <i class="bi bi-person-circle"></i> Iniciar Sesión
+                </a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </div>

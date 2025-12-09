@@ -1,10 +1,75 @@
-<div class="container mt-5 col-md-4">
-  <h2 class="mb-4 text-center">Iniciar Sesión</h2>
-  <form method="post">
+<!DOCTYPE html>
+{% extends "sistemainventario/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
 
-    <button type="submit" class="btn btn-primary w-100 mt-2">Ingresar</button>
-  </form>
-  <div class="mt-3 text-center">
-    <p>¿No tienes cuenta? <a href="#">Regístrate aquí</a></p>
+{% block title %}
+<title>Iniciar Sesión - Mundo Cartas</title>
+{% endblock title %}
+
+<body>
+  {% block content %}
+  <div class="container mt-5">
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- MENSAJES (success, error, warning, info) - POSICIÓN FIJA -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    {% if messages %}
+      <div style="position: fixed; top: 80px; right: 20px; z-index: 9999; max-width: 400px;">
+        {% for message in messages %}
+          <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show shadow-lg" role="alert">
+            <strong>{% if message.tags == 'error' %}✗{% else %}✓{% endif %}</strong> {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CARD DE LOGIN CENTRADA -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <div class="row justify-content-center">
+      <div class="col-md-5 col-lg-4">
+        <div class="card shadow-lg border-0 rounded-4">
+          <div class="card-body p-5">
+            <!-- Título con emoji -->
+            <div class="text-center mb-4">
+              <h2 class="fw-bold">🔐 Iniciar Sesión</h2>
+              <p class="text-muted">Accede a tu cuenta de Mundo Cartas</p>
+            </div>
+
+            <!-- Formulario de login -->
+            <form method="post">
+              {% csrf_token %}
+              <!-- Token CSRF obligatorio para seguridad en formularios POST -->
+              
+              {{ form|crispy }}
+              
+              <button type="submit" class="btn btn-primary w-100 mt-3 py-2 fw-bold">
+                <i class="bi bi-box-arrow-in-right"></i> Ingresar
+              </button>
+            </form>
+
+            <!-- Separador -->
+            <hr class="my-4">
+
+            <!-- Link de registro (opcional) -->
+            <div class="text-center">
+              <p class="text-muted mb-0">
+                ¿No tienes cuenta? <a href="#" class="text-decoration-none fw-bold">Regístrate aquí</a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Texto adicional debajo de la card -->
+        <div class="text-center mt-3">
+          <small class="text-muted">
+            © 2025 Mundo Cartas - Sistema de Inventario
+          </small>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  {% endblock content %}
+</body>
+</html>

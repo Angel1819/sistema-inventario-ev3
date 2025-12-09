@@ -26,7 +26,7 @@
     {% comment %} <h1>{{ titulo }}</h1>
     <p>Productos de la tienda Mundo Cartas.</p> {% endcomment %}
     <div class="container">
-      <!-- Aquí el alumno agregará los bloques -->
+      <!-- Título de la página -->
       <div class="text-center mt-5">
         <h1>{{ titulo }}</h1>
         <p class="lead">
@@ -34,7 +34,21 @@
         </p>
       </div>
       
-      <!-- Botón para crear producto -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <!-- MENSAJES (success, error, warning, info) - POSICIÓN FIJA -->
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      {% if messages %}
+        <div style="position: fixed; top: 80px; right: 20px; z-index: 9999; max-width: 400px;">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-lg" role="alert">
+              <strong>✓</strong> {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <!-- Botones de administración (crear producto, categoría, proveedor) -->
       <div class="mb-4 text-end">
         <a href="{% url 'crear_producto' %}" class="btn btn-success">
           <i class="bi bi-plus-circle"></i> Nuevo Producto
@@ -76,6 +90,21 @@
               {% endif %}
             </td>
             <td>
+              <!-- ═══════════════════════════════════════════════════════════════ -->
+              <!-- BOTÓN AGREGAR AL CARRITO -->
+              <!-- ═══════════════════════════════════════════════════════════════ -->
+              {% if producto.stock > 0 %}
+                <!-- Si hay stock disponible, mostrar botón activo -->
+                <a href="{% url 'agregar_carrito' producto.id %}" class="btn btn-success btn-sm">
+                  🛒 Agregar
+                </a>
+              {% else %}
+                <!-- Si NO hay stock, mostrar botón deshabilitado -->
+                <button class="btn btn-secondary btn-sm" disabled>
+                  Sin stock
+                </button>
+              {% endif %}
+              
               <!--
                 Botón "Ver detalles":
                 - data-bs-toggle="modal" y data-bs-target="#detalleModal" hacen que Bootstrap abra el modal con id "detalleModal" al hacer clic.

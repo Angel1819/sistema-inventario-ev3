@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+{% extends "sistemainventario/base.html" %}
+{% load static %}
+
+{% block title %}
+<title>Mi Carrito - Mundo Cartas</title>
+{% endblock title %}
+
+<body>
+    {% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">🛒 Mi Carrito</h1>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- MENSAJES (success, error, warning, info) - POSICIÓN FIJA -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        {% if messages %}
+            <div style="position: fixed; top: 80px; right: 20px; z-index: 9999; max-width: 400px;">
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show shadow-lg" role="alert">
+                        <strong>✓</strong> {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        {% if carrito_items %}
+            <!-- Si hay items en el carrito -->
+            
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio Unitario</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Recorrer cada item del carrito -->
+                        {% for item in carrito_items %}
+                            <tr>
+                                <!-- Nombre del producto -->
+                                <td><strong>{{ item.producto.nombre }}</strong></td>
+                                
+                                <!-- Precio unitario -->
+                                <td>${{ item.precio_unitario }}</td>
+                                
+                                <!-- Cantidad con botones para aumentar/disminuir -->
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{% url 'disminuir_cantidad' item.id %}" class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-dash"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-secondary" disabled>
+                                            {{ item.cantidad }}
+                                        </button>
+                                        <a href="{% url 'aumentar_cantidad' item.id %}" class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-plus"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                
+                                <!-- Subtotal (llamar al método subtotal()) -->
+                                <td><strong>${{ item.subtotal }}</strong></td>
+                                
+                                <!-- Botón eliminar -->
+                                <td>
+                                    <a href="{% url 'eliminar_carrito' item.id %}" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Total -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h3 class="text-end">Total: <span class="text-success">${{ total }}</span></h3>
+                </div>
+            </div>
+            
+            <!-- Botones de acción -->
+            <div class="d-flex justify-content-between mt-4 mb-5">
+                <a href="{% url 'inventario_home' %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver al Inventario
+                </a>
+                
+                <!-- Botón para realizar la venta -->
+                <form method="POST" action="{% url 'realizar_venta' %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-lg" onclick="return confirm('¿Confirmar venta por ${{ total }}?')">
+                        <i class="bi bi-check-circle"></i> Realizar Venta
+                    </button>
+                </form>
+            </div>
+        
+        {% else %}
+            <!-- Si el carrito está vacío -->
+            <div class="alert alert-info text-center" role="alert">
+                <h4>El carrito está vacío</h4>
+                <p class="mb-3">No hay productos en tu carrito</p>
+                <a href="{% url 'inventario_home' %}" class="btn btn-primary">
+                    <i class="bi bi-box"></i> Ir al Inventario
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    {% endblock content %}
+</body>
+</html>

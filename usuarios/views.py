@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from .decorators import rol_requerido, solo_administrador
 from .models import Usuario
+from .forms import LoginForm
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -16,23 +17,20 @@ def iniciar_sesion(request):
         return redirect('inventario_home')
     
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        form = LoginForm(request.POST)
         
-        # Buscar usuario con esas credenciales
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            # ✅ Credenciales correctas
-            login(request, user)  # Crear sesión
-            return redirect('inventario_home')
-        else:
-            # ❌ Credenciales incorrectas
-            return render(request, 'usuarios/iniciar_sesion.html', {
-                'error': 'Usuario o contraseña incorrectos'
-            })
+        if form.is_valid():
+            # El formulario ya validó las credenciales
+            # El usuario autenticado está en form.user
+            login(request, form.user)
+            return redirect('home')
+        # Si no es válido, el formulario tendrá los errores
+    else:
+        form = LoginForm()
     
-    return render(request, 'usuarios/iniciar_sesion.html')
+    return render(request, 'usuarios/iniciar_sesion.html', {
+        'form': form
+    })
 
 
 # ═══════════════════════════════════════════════════════════════
