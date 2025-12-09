@@ -1,7 +1,7 @@
 # Ignorar archivos de base de datos de Django
 db.sqlite3
-*.pyc
 __pycache__/
+*.pyc
 venv/
 .env
 *.pyo
