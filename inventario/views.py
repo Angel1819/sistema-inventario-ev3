@@ -60,6 +60,13 @@ def agregar_carrito(request, id):
     producto = get_object_or_404(Producto, id=id)
     # ↑ Si no existe, muestra error 404
     
+    # ═══════════════════════════════════════════════════════════════
+    # VALIDACIÓN 1: Verificar que haya stock disponible
+    # ═══════════════════════════════════════════════════════════════
+    if producto.stock <= 0:
+        messages.error(request, f'"{producto.nombre}" no tiene stock disponible')
+        return redirect('inventario_home')
+    
     # Verificar si ya existe en el carrito
     carrito_item = CarritoItem.objects.filter(
         usuario=request.user,
@@ -69,6 +76,13 @@ def agregar_carrito(request, id):
     
     if carrito_item:
         # ✅ Ya existe en el carrito
+        # ═══════════════════════════════════════════════════════════════
+        # VALIDACIÓN 2: No permitir agregar más de lo que hay en stock
+        # ═══════════════════════════════════════════════════════════════
+        if carrito_item.cantidad >= producto.stock:
+            messages.warning(request, f'No puedes agregar más "{producto.nombre}". Stock disponible: {producto.stock}')
+            return redirect('inventario_home')
+        
         # Aumentar la cantidad en 1
         carrito_item.cantidad += 1
         carrito_item.save()
@@ -102,6 +116,15 @@ def aumentar_cantidad(request, id):
     # Obtener el item del carrito
     carrito_item = get_object_or_404(CarritoItem, id=id, usuario=request.user)
     # ↑ Verificar que pertenece a este usuario
+    
+    # ═══════════════════════════════════════════════════════════════
+    # VALIDACIÓN: No permitir aumentar más allá del stock disponible
+    # ═══════════════════════════════════════════════════════════════
+    producto = carrito_item.producto
+    
+    if carrito_item.cantidad >= producto.stock:
+        messages.warning(request, f'No puedes agregar más "{producto.nombre}". Stock disponible: {producto.stock}')
+        return redirect('ver_carrito')
     
     # Aumentar cantidad en 1
     carrito_item.cantidad += 1
@@ -178,6 +201,18 @@ def realizar_venta(request):
         messages.error(request, 'El carrito está vacío')
         return redirect('ver_carrito')
     
+    # ═══════════════════════════════════════════════════════════════
+    # VALIDACIÓN CRÍTICA: Verificar stock disponible antes de vender
+    # ═══════════════════════════════════════════════════════════════
+    for item in carrito_items:
+        if item.cantidad > item.producto.stock:
+            messages.error(
+                request, 
+                f'Stock insuficiente para "{item.producto.nombre}". '
+                f'Solicitado: {item.cantidad}, Disponible: {item.producto.stock}'
+            )
+            return redirect('ver_carrito')
+    
     # Calcular el total
     total = 0
     for item in carrito_items:
@@ -206,8 +241,8 @@ def realizar_venta(request):
         producto.stock -= item.cantidad
         # ↑ Restar la cantidad vendida del stock
         
+        # Asegurar que el stock no sea negativo
         if producto.stock < 0:
-            # No permitir stock negativo
             producto.stock = 0
         
         producto.save()

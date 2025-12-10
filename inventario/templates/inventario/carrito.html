@@ -35,6 +35,7 @@
                             <th>Producto</th>
                             <th>Precio Unitario</th>
                             <th>Cantidad</th>
+                            <th>Stock Disponible</th>
                             <th>Subtotal</th>
                             <th>Acciones</th>
                         </tr>
@@ -58,10 +59,36 @@
                                         <button class="btn btn-sm btn-outline-secondary" disabled>
                                             {{ item.cantidad }}
                                         </button>
-                                        <a href="{% url 'aumentar_cantidad' item.id %}" class="btn btn-sm btn-outline-secondary">
-                                            <i class="bi bi-plus"></i>
-                                        </a>
+                                        <!-- ═══════════════════════════════════════════════════════════════ -->
+                                        <!-- DESHABILITAR BOTÓN + SI SE ALCANZÓ EL LÍMITE DE STOCK -->
+                                        <!-- ═══════════════════════════════════════════════════════════════ -->
+                                        {% if item.cantidad >= item.producto.stock %}
+                                            <!-- No se puede agregar más: límite alcanzado -->
+                                            <button class="btn btn-sm btn-outline-secondary" disabled title="Stock máximo alcanzado">
+                                                <i class="bi bi-plus"></i>
+                                            </button>
+                                        {% else %}
+                                            <!-- Se puede agregar más: botón activo -->
+                                            <a href="{% url 'aumentar_cantidad' item.id %}" class="btn btn-sm btn-outline-secondary">
+                                                <i class="bi bi-plus"></i>
+                                            </a>
+                                        {% endif %}
                                     </div>
+                                </td>
+                                
+                                <!-- ═══════════════════════════════════════════════════════════════ -->
+                                <!-- COLUMNA STOCK DISPONIBLE CON INDICADOR VISUAL -->
+                                <!-- ═══════════════════════════════════════════════════════════════ -->
+                                <td>
+                                    {% if item.cantidad >= item.producto.stock %}
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-exclamation-triangle"></i> Máximo: {{ item.producto.stock }}
+                                        </span>
+                                    {% else %}
+                                        <span class="badge bg-success">
+                                            {{ item.producto.stock }} disponibles
+                                        </span>
+                                    {% endif %}
                                 </td>
                                 
                                 <!-- Subtotal (llamar al método subtotal()) -->
