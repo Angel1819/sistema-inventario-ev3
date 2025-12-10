@@ -10,6 +10,10 @@ class Categoria(models.Model):
     def __str__(self):
         return self.nombre
 
+        class Meta:
+            verbose_name = "Categoría"
+            verbose_name_plural = "Categorías"
+
 
 class Proveedor(models.Model):
     nombre = models.CharField(max_length=100)
@@ -20,6 +24,10 @@ class Proveedor(models.Model):
 
     def __str__(self):
         return self.nombre
+
+        class Meta:
+            verbose_name = "Proveedor"
+            verbose_name_plural = "Proveedores"
 
 
 class Producto(models.Model):
@@ -35,6 +43,10 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre + ' - ' + self.categoria.nombre
+
+        class Meta:
+            verbose_name = "Producto"
+            verbose_name_plural = "Productos"
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -69,6 +81,10 @@ class CarritoItem(models.Model):
     def __str__(self):
         return f"{self.producto.nombre} x{self.cantidad}"
 
+        class Meta:
+            verbose_name = "Item del Carrito"
+            verbose_name_plural = "Items del Carrito"
+
 
 # ═══════════════════════════════════════════════════════════════
 # NUEVO: Modelo Venta
@@ -90,6 +106,10 @@ class Venta(models.Model):
     
     def __str__(self):
         return f"Venta #{self.id} - ${self.total}"
+
+        class Meta:
+            verbose_name = "Venta"
+            verbose_name_plural = "Ventas"
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -117,3 +137,7 @@ class DetalleVenta(models.Model):
     
     def __str__(self):
         return f"{self.producto.nombre} x{self.cantidad}"
+
+        class Meta:
+            verbose_name = "Detalle de Venta"
+            verbose_name_plural = "Detalles de Ventas"
