@@ -7,12 +7,14 @@ class Categoria(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(blank=True)
 
+    class Meta:
+            verbose_name = "Categoría"
+            verbose_name_plural = "Categorías"
+
     def __str__(self):
         return self.nombre
 
-        class Meta:
-            verbose_name = "Categoría"
-            verbose_name_plural = "Categorías"
+    
 
 
 class Proveedor(models.Model):
@@ -22,12 +24,14 @@ class Proveedor(models.Model):
     email = models.EmailField(blank=True)
     direccion = models.CharField(max_length=200, blank=True)
 
+    class Meta:
+            verbose_name = "Proveedor"
+            verbose_name_plural = "Proveedores"
+
     def __str__(self):
         return self.nombre
 
-        class Meta:
-            verbose_name = "Proveedor"
-            verbose_name_plural = "Proveedores"
+    
 
 
 class Producto(models.Model):
@@ -78,12 +82,14 @@ class CarritoItem(models.Model):
         # cantidad * precio_unitario
         return self.cantidad * self.precio_unitario
     
+    class Meta:
+            verbose_name = "Item del Carrito"
+            verbose_name_plural = "Items del Carrito"
+    
     def __str__(self):
         return f"{self.producto.nombre} x{self.cantidad}"
 
-        class Meta:
-            verbose_name = "Item del Carrito"
-            verbose_name_plural = "Items del Carrito"
+    
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -104,12 +110,14 @@ class Venta(models.Model):
     fecha_venta = models.DateTimeField(auto_now_add=True)
     # ↑ Cuándo se realizó
     
+    class Meta:
+        verbose_name = "Venta"
+        verbose_name_plural = "Ventas"
+
     def __str__(self):
         return f"Venta #{self.id} - ${self.total}"
 
-        class Meta:
-            verbose_name = "Venta"
-            verbose_name_plural = "Ventas"
+        
 
 
 # ═══════════════════════════════════════════════════════════════
@@ -134,10 +142,12 @@ class DetalleVenta(models.Model):
     
     subtotal = models.PositiveIntegerField()
     # ↑ cantidad * precio
+
+    class Meta:
+            verbose_name = "Detalle de Venta"
+            verbose_name_plural = "Detalles de Ventas"
     
     def __str__(self):
         return f"{self.producto.nombre} x{self.cantidad}"
 
-        class Meta:
-            verbose_name = "Detalle de Venta"
-            verbose_name_plural = "Detalles de Ventas"
+    
