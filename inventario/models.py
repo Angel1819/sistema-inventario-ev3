@@ -44,13 +44,15 @@ class Producto(models.Model):
     fecha_modificacion = models.DateTimeField(auto_now=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
     proveedores = models.ManyToManyField('Proveedor', blank=True)
+    
+    class Meta:
+            verbose_name = "Producto"
+            verbose_name_plural = "Productos"
 
     def __str__(self):
         return self.nombre + ' - ' + self.categoria.nombre
 
-        class Meta:
-            verbose_name = "Producto"
-            verbose_name_plural = "Productos"
+    
 
 
 # ═══════════════════════════════════════════════════════════════
